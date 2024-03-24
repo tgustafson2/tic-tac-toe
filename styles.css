@@ -1,0 +1,20 @@
+.board-container{
+    background-color: black;
+    height: 620px;
+    width: 620px;
+    display: grid;
+    grid-template-rows: repeat(3,200px);
+    grid-template-columns: repeat(3,200px);
+    gap: 10px;
+}
+
+.board-space{
+    height: 200px;
+    width: 200px;
+    background-color: white;
+}
+
+.mark{
+    height: 200px;
+    width: 200px;
+}
