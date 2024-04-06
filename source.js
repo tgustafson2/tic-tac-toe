@@ -9,7 +9,7 @@ const board = (function(){
                 return `${boardArray[i][0]}`;
             }
             if(boardArray[0][i] === boardArray[1][i] && boardArray[0][i]==boardArray[2][i] && boardArray[0][i]!=''){
-                return `${boardArray[i][0]}`;
+                return `${boardArray[0][i]}`;
             }
         }
         if(boardArray[0][0] === boardArray[1][1] && boardArray[0][0]==boardArray[2][2] && boardArray[0][0]!=''){
@@ -52,13 +52,18 @@ const board = (function(){
 
 const game = (function() {
     const boardDisplay = document.querySelectorAll(".board-space");
+    const newGameBtn = document.querySelector(".NewGame");
+    const nextRoundBtn = document.querySelector(".NextRound");
+    const editPlayer = document.querySelectorAll(".Player > button");
     let players = [{
-                    name: '',
-                    mark: 'x'
+                    name: 'Player 1',
+                    mark: 'x',
+                    score: 0
                 },
             {
-                name: '',
-                mark: 'o'
+                name: 'Player 2',
+                mark: 'o',
+                score: 0
             }];
     let currTurn = 0;
     boardDisplay.forEach(cell =>{
@@ -68,7 +73,7 @@ const game = (function() {
             if(board.checkGameStatus()!="Active" || !MakeMove(event.currentTarget.getAttribute("location").split(","))){
                 return;
             }
-            const cell = document.querySelector(`[location="${event.currentTarget.getAttribute("location")}"]`)
+            const cell = document.querySelector(`[location="${event.currentTarget.getAttribute("location")}"]`);
             const mark = document.createElement("img");
             mark.className = "mark";
             if(getTurn() == 'x'){
@@ -86,11 +91,51 @@ const game = (function() {
             cell.appendChild(mark);
             const stat = board.checkGameStatus();
             if(stat!="Active"){
+                console.log(stat);
                 displayStatus(stat);
+                const scores = document.querySelectorAll(".scores")
+                for(let i=0; i<players.length; i++){
+                    if(players[i].mark==stat){
+                        players[i].score++;
+                        //update score display
+                        scores[i].innerText = players[i].score;
+                        
+                    }
+                }
             }
             
         });
     })
+    newGameBtn.addEventListener('click', (event) =>{
+        event.preventDefault();
+        board.resetBoard();
+        resetDisplay();
+        currTurn = 0;
+        const scores = document.querySelectorAll(".scores");
+        for(let i=0; i<players.length; i++){
+            players[i].score = 0;
+            scores[i].innerText = players[i].score;
+        }
+
+
+    })
+    nextRoundBtn.addEventListener('click', (event) =>{
+        event.preventDefault();
+        board.resetBoard();
+        resetDisplay();
+
+    })
+
+    function resetDisplay(){
+        boardDisplay.forEach(cell =>{
+            cell.replaceChildren();
+        })
+        const gameResult = document.querySelector(".GameResult");
+        if(gameResult!=undefined || gameResult!=null){
+            gameResult.remove();
+        }
+    }
+    
     const MakeMove = function(coordinates){
         return board.updateBoard(players[currTurn].mark,coordinates[0],coordinates[1]);
         
@@ -99,7 +144,8 @@ const game = (function() {
     
     const displayStatus = (status) =>{
         const gameResult = document.createElement("h1");
-        const body = document.querySelector("body");
+        gameResult.className = "GameResult";
+        const gameContainer = document.querySelector(".gameContainer");
         if(status === "Draw"){
             gameResult.innerText = "Draw";
             body.appendChild(gameResult);
@@ -114,7 +160,51 @@ const game = (function() {
         else{
             gameResult.innerText = `${winner.name} wins`;
         }
-        body.appendChild(gameResult);
+        gameContainer.appendChild(gameResult);
 
     }
+    editPlayer.forEach(btn => {
+        btn.addEventListener('click', editName)
+    })
+    
+    function editName(event){
+        console.log(event.target.parentNode);
+        event.preventDefault();
+        event.stopPropagation();
+        // console.log(event.currentTarget.getAttribute("playerId"));
+        const player = document.querySelector(`[playerId="${event.target.parentNode.getAttribute("playerId")}"]`);
+        let currName = player.firstElementChild.innerText;
+        const inputName = document.createElement("input");
+        // inputName.placeholder = currName;
+        inputName.value = currName;
+        inputName.id = "new_name";
+        console.log(player.childNodes);
+        player.replaceChild(inputName, player.childNodes[1]);
+        player.childNodes[3].removeEventListener('click',editName);
+        player.childNodes[3].innerText = "Save Name";
+        player.childNodes[3].addEventListener('click',saveName);
+        
+    }
+    
+    function saveName(event){
+        console.log(event.target.parentNode);
+        event.preventDefault();
+        event.stopPropagation();
+        const player = document.querySelector(`[playerId="${event.target.parentNode.getAttribute("playerId")}"]`);
+        let newNameText = player.childNodes[1].value;
+        players[parseInt(event.target.parentNode.getAttribute("playerId"))-1].name = newNameText
+        const newName = document.createElement("h2");
+        newName.className = "PlayerName";
+        newName.innerText = newNameText;
+        console.log(newName);
+        player.replaceChild(newName, player.childNodes[1]);
+        player.childNodes[3].removeEventListener('click',saveName);
+        player.childNodes[3].innerText = "Edit Name";
+        player.childNodes[3].addEventListener('click',editName);
+    }
 })();
+
+
+
+
+

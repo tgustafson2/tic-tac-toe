@@ -1,3 +1,8 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+
 .board-container{
     background-color: black;
     height: 620px;
@@ -17,4 +22,33 @@
 .mark{
     height: 200px;
     width: 200px;
+}
+
+.scoreboard{
+    display: grid;
+    grid-template-columns: repeat(2,300px);
+}
+
+.Player{
+    display: grid;
+    grid-template-columns: repeat(2,150px);
+    grid-template-rows: repeat(2,64px);
+    align-items: center;
+}
+
+.Player > button{
+    height: 32px;
+    align-self: center;
+    justify-self: right;
+    margin-right: 16px;
+    width: 80px;
+    
+}
+
+.gameContainer{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }

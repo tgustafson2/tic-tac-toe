@@ -7,18 +7,36 @@
     <script src="source.js" defer></script>
     <title>Tic-Tac-Toe</title>
 </head>
-<body>
-    <div class="board-container">
-        <div class="board-space" location="0,0"></div>
-        <div class="board-space" location="0,1"></div>
-        <div class="board-space" location="0,2"></div>
-        <div class="board-space" location="1,0"></div>
-        <div class="board-space" location="1,1"></div>
-        <div class="board-space" location="1,2"></div>
-        <div class="board-space" location="2,0"></div>
-        <div class="board-space" location="2,1"></div>
-        <div class="board-space" location="2,2"></div>
-    </div>
+<div class="gameContainer">
+    <body>
+        <div class="board-container">
+            <div class="board-space" location="0,0"></div>
+            <div class="board-space" location="0,1"></div>
+            <div class="board-space" location="0,2"></div>
+            <div class="board-space" location="1,0"></div>
+            <div class="board-space" location="1,1"></div>
+            <div class="board-space" location="1,2"></div>
+            <div class="board-space" location="2,0"></div>
+            <div class="board-space" location="2,1"></div>
+            <div class="board-space" location="2,2"></div>
+        </div>
+        <div class="scoreboard">
+            <div class="Player" playerId = "1">
+                <h2 class="PlayerName">Player 1</h2>
+                <button>Edit Name</button>
+                <h2 class="scores">0</h2>
+            </div>
+            <div class="Player" playerId = "2">
+                <h2 class="PlayerName">Player 2</h2>
+                <button>Edit Name</button>
+                <h2 class="scores">0</h2>
+            </div>
+        </div>
+        <div class="gameControls">
+            <button class="NewGame">New Game</button>
+            <button class="NextRound">Next Round</button>
     
+        </div>
+</div>
 </body>
 </html>
